@@ -60,7 +60,7 @@ async function loadAndDraw() {
     selectedDistricts.includes(file.district)
   );
 
-  const rawData = {}; // { district: { schoolYear: percent } }
+  const rawData = {}; // { district: { year: % } }
   const allYears = new Set();
 
   for (const file of filteredFiles) {
@@ -69,36 +69,28 @@ async function loadAndDraw() {
 
       rows.forEach(row => {
         const rawYear = (row.SchoolYear || "").trim();
-        const match = rawYear.match(/^\d{4}-\d{4}$/);
-        if (!match) return; // skip invalid years
+        if (!/^\d{4}-\d{4}$/.test(rawYear)) return;
 
-        const year = match[0];
         const percent = parseFloat(row.PercentProficient || 0);
         if (isNaN(percent)) return;
 
-        allYears.add(year);
-
-        if (!rawData[file.district]) {
-          rawData[file.district] = {};
-        }
-
-        rawData[file.district][year] = percent;
+        allYears.add(rawYear);
+        if (!rawData[file.district]) rawData[file.district] = {};
+        rawData[file.district][rawYear] = percent;
       });
     } catch (err) {
-      console.warn(`Could not load file ${file.filename}:`, err);
+      console.warn(`Could not load file ${file.filename}`);
     }
   }
 
-  // Sort all valid years
   const sortedYears = Array.from(allYears).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
-  // Create datasets with aligned points
   const datasets = Object.entries(rawData).map(([district, yearMap]) => {
-    const data = sortedYears.map(yr => yearMap[yr] ?? null); // pad missing years
+    const data = sortedYears.map(yr => yearMap[yr] ?? null); // align to labels
     return {
       label: district,
       data,
-      tension: 0, // no curves
+      tension: 0,
       spanGaps: false
     };
   });
@@ -108,7 +100,7 @@ async function loadAndDraw() {
   chart = new Chart(chartCanvas, {
     type: 'line',
     data: {
-      labels: sortedYears,
+      labels: sortedYears, // now the real x-axis
       datasets
     },
     options: {
@@ -117,28 +109,17 @@ async function loadAndDraw() {
         title: {
           display: true,
           text: `% Proficient in ${selectedSubject}`
-        },
-        legend: {
-          display: true,
-          position: 'top'
         }
       },
       scales: {
         y: {
           beginAtZero: true,
-          title: {
-            display: true,
-            text: '% Proficient'
-          }
+          title: { display: true, text: '% Proficient' }
         },
         x: {
-          title: {
-            display: true,
-            text: 'School Year'
-          }
+          title: { display: true, text: 'School Year' }
         }
       }
     }
   });
 }
-
