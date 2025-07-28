@@ -38,6 +38,7 @@ function populateSelectors() {
     .join("");
 }
 
+// Load a single CSV using PapaParse
 function loadCSV(filePath) {
   return new Promise((resolve, reject) => {
     Papa.parse(`data/${filePath}`, {
@@ -49,6 +50,7 @@ function loadCSV(filePath) {
   });
 }
 
+// Load selected files and render the line chart
 async function loadAndDraw() {
   const selectedYear = yearSelect.value;
   const selectedSubject = subjectSelect.value;
@@ -79,19 +81,21 @@ async function loadAndDraw() {
         rawData[file.district][rawYear] = percent;
       });
     } catch (err) {
-      console.warn(`Could not load file ${file.filename}`);
+      console.warn(`Could not load file ${file.filename}:`, err);
     }
   }
 
-  const sortedYears = Array.from(allYears).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+  const sortedYears = Array.from(allYears).sort((a, b) =>
+    a.localeCompare(b, undefined, { numeric: true })
+  );
 
   const datasets = Object.entries(rawData).map(([district, yearMap]) => {
-    const data = sortedYears.map(yr => yearMap[yr] ?? null); // align to labels
+    const data = sortedYears.map(year => yearMap[year] ?? null); // pad missing with null
     return {
       label: district,
       data,
-      tension: 0,
-      spanGaps: false
+      tension: 0,         // no curve
+      spanGaps: false     // don't connect across nulls
     };
   });
 
@@ -100,7 +104,7 @@ async function loadAndDraw() {
   chart = new Chart(chartCanvas, {
     type: 'line',
     data: {
-      labels: sortedYears, // now the real x-axis
+      labels: sortedYears, // x-axis values
       datasets
     },
     options: {
@@ -109,15 +113,32 @@ async function loadAndDraw() {
         title: {
           display: true,
           text: `% Proficient in ${selectedSubject}`
+        },
+        legend: {
+          display: true,
+          position: 'top'
+        },
+        tooltip: {
+          mode: 'nearest',
+          intersect: false,
+          callbacks: {
+            label: ctx => `${ctx.dataset.label}: ${ctx.raw ?? 'No Data'}%`
+          }
         }
       },
       scales: {
         y: {
           beginAtZero: true,
-          title: { display: true, text: '% Proficient' }
+          title: {
+            display: true,
+            text: '% Proficient'
+          }
         },
         x: {
-          title: { display: true, text: 'School Year' }
+          title: {
+            display: true,
+            text: 'School Year'
+          }
         }
       }
     }
