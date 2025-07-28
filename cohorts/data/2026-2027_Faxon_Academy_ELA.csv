@@ -1,0 +1,6 @@
+SchoolYear,TestType,ISDName,DistrictName,BuildingName,CountyName,GradeContentTested,Subject,ReportCategory,TotalAdvanced,TotalProficient,TotalPartiallyProficient,TotalNotProficient,TotalMet,TotalDidNotMeet,NumberAssessed,PercentAdvanced,PercentProficient,PercentPartiallyProficient,PercentNotProficient,PercentMet,PercentDidNotMeet,AvgSS,StdDevSS,GradClass,SourceFile
+2022-2023,PSAT,Oakland Schools,Faxon Academy,All Buildings,Oakland,8,ELA,All Students,<3,<3,*,*,<3,*,11,<=50%,<=50%,<=50%,>=50%,<=50%,>=50%,359.1000000000000000,41.4000000000000000,2026-2027,2022-2023 - Grades 3-8.csv
+2018-2019,M-STEP,Oakland Schools,Faxon Academy,All Buildings,Oakland,4,ELA,All Students,<3,<3,<3,*,<3,*,11,<=50%,<=50%,<=50%,>=50%,<=50%,>=50%,1377.8000000000000000,24.3000000000000000,2026-2027,2018-2019 - Grades 3-8.csv
+2021-2022,M-STEP,Oakland Schools,Faxon Academy,All Buildings,Oakland,7,ELA,All Students,*,*,*,*,*,*,<10,*,*,*,*,*,*,*,*,2026-2027,2021-2022 - Grades 3-8.csv
+2017-2018,M-STEP,Oakland Schools,Faxon Academy,All Buildings,Oakland,3,ELA,All Students,<3,<3,<3,*,<3,*,14,<=50%,<=50%,<=50%,>=50%,<=50%,>=50%,1274.0000000000000000,25.0000000000000000,2026-2027,2017-2018 - Grades 3-8.csv
+2020-2021,M-STEP,Oakland Schools,Faxon Academy,All Buildings,Oakland,6,ELA,All Students,*,*,*,*,*,*,<10,*,*,*,*,*,*,*,*,2026-2027,2020-2021 - Grades 3-8.csv
