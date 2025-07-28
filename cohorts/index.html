@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>School Performance Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    select { margin: 10px; }
+    select[multiple] { height: 120px; width: 300px; }
+    canvas { margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <h2>Performance by Graduation Year & District</h2>
+
+  <label for="yearSelect">Graduation Year:</label>
+  <select id="yearSelect"></select>
+
+  <label for="districtSelect">District(s):</label>
+  <select id="districtSelect" multiple></select>
+
+  <label for="subjectSelect">Subject:</label>
+  <select id="subjectSelect">
+    <option value="ELA">ELA</option>
+    <option value="Mathematics">Mathematics</option>
+  </select>
+
+  <button onclick="loadAndDraw()">Update Chart</button>
+
+  <canvas id="scoreChart" width="900" height="500"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
